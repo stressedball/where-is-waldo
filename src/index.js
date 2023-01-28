@@ -1,14 +1,17 @@
-import { initializeApp } from "firebase/app";
-import { getFirebaseConfig } from "./firebase-config";
+import App from './App';
+import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import './index.css';
-import App from './App';
+import { getFirebaseConfig } from "./firebase-config";
 import { Error, LeaderBoard, LandingPage, UserSpace, GameBoard } from './components/ImportCaller';
-import characters from './components/characters.json'
+import firebase from 'firebase/compat/app';
+import "firebase/compat/firestore";
 const config = getFirebaseConfig()
-const firebaseApp = initializeApp(config);
+// This line might be helpful later on
+// const app = initializeApp() doesn't work without firebase before
+firebase.initializeApp(config);
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -17,7 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <LandingPage characters={characters}/>
+        element: <LandingPage />
       },
       {
         path: '/leader_board',
@@ -25,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/game',
-        element: <GameBoard characters={characters}/>
+        element: <GameBoard />
       },
       {
         path: '/user_space',
@@ -34,7 +37,6 @@ const router = createBrowserRouter([
     ]
   }
 ])
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
