@@ -2,11 +2,12 @@ import 'firebase/firestore'
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
 import { getFirebaseConfig } from "../firebase-config";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInAnonymously } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = getFirebaseConfig()
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth();
 
 async function fetchData() {
     let characters = []
@@ -17,8 +18,6 @@ async function fetchData() {
                 characters.push(doc.data());
             })
         })
-        // areas.forEach((doc) => {
-        // })
         await getDocs(collection(db, "picture")).then((data) => {
             const playground = data.docs[0].data();
             picture = { width: playground.width, height: playground.height };
@@ -28,8 +27,8 @@ async function fetchData() {
         console.error('error getting documents', error);
     }
 }
-
 async function setData(arr, handle, name) {
+    let userId = null
     if (handle === 'anonymous') {
         await addDoc(collection(db, "times"), {
             time: arr,
@@ -37,31 +36,19 @@ async function setData(arr, handle, name) {
         })
     } else {
         const provider = new GoogleAuthProvider()
-        const auth = getAuth();
-        signInWithPopup(auth, provider)
+        await signInWithPopup(auth, provider)
             .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                console.log(credential)
-                console.log(token)
-                console.log(user)
-                // ...
+                userId = result.user.uid
             }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
+                console.log('Error authenticating via Google', error)
+            })
+        await addDoc(collection(db, 'times'), {
+            name: name,
+            time: arr,
+            id: userId
+        })
     }
 }
-
 async function getTimes() {
     let listOfTimes = []
     try {
@@ -78,8 +65,41 @@ async function getTimes() {
         console.error('error getting documents', error);
     }
 }
+async function getLoggedUser() {
+    let userData = []
+    const uid = await checkStatus()
+    try {
+        await getDocs(collection(db, 'times')).then((docs) => {
+            docs.forEach((doc) => {
+                if (doc.data().id === uid) {
+                    userData.push(doc.data())
+                }
+            })
+        })
+    } catch (error) {
+        console.error('error getting user times', error);
+    }
+    return userData
+}
+function checkStatus() {
+    return new Promise((res) => {
+        let uid = null
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                uid = user.uid;
+                res(uid)
+            } else {
+                // User is signed out
+                // ...
+                res(null)
+            }
+        });
+    })
+
+}
 export {
     setData,
     fetchData,
-    getTimes
+    getTimes,
+    getLoggedUser
 }

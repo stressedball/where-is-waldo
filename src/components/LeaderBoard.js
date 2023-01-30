@@ -1,9 +1,8 @@
-// import { useEffect } from "react";
 import { useEffect, useState } from "react"
 import { getTimes } from "./fetchAndSet"
+import uniqid from "uniqid"
 export default function LeaderBoard() {
     const [times, setTimes] = useState([]);
-
     useEffect(() => {
         async function fetchData() {
             try {
@@ -26,7 +25,7 @@ export default function LeaderBoard() {
     }, []);
     const leaderboard = times.map(el => {
         return (
-            <div className="row">
+            <div className="row" key={uniqid()}>
                 <p>
                     {el.name}
                 </p>
@@ -38,7 +37,7 @@ export default function LeaderBoard() {
     })
     return (
         <div>
-            MAMMA MIA
+            <h1>Leader Board</h1>
             {leaderboard}
         </div>
     )
