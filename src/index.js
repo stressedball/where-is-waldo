@@ -3,15 +3,15 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { getFirebaseConfig } from "./firebase-config";
 import { Error, LeaderBoard, LandingPage, UserSpace, GameBoard } from './components/ImportCaller';
-import firebase from 'firebase/compat/app';
-import "firebase/compat/firestore";
-const config = getFirebaseConfig()
-// This line might be helpful later on
-// const app = initializeApp() doesn't work without firebase before
-firebase.initializeApp(config);
-
+import {fetchData} from './components/fetchAndSet';
+let picture = {}
+let characters = []
+// this scares me.
+fetchData().then((data) => {
+  picture = data.picture
+  characters = data.characters
+})
 const router = createBrowserRouter([
   {
     path: '/',
@@ -43,3 +43,4 @@ root.render(
     <RouterProvider router={router} />
   </React.StrictMode>
 );
+export {picture, characters}

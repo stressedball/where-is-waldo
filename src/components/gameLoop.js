@@ -1,21 +1,27 @@
 import BoxCharacters from "./BoxCharacters"
-export default async function gameLoop(characters) {
+export default async function gameLoop(characters, gameStarts, stopTimer) {
     characters.forEach(el => el.found = false)
     await imageIsLoaded()
+    gameStarts()
     while (characters.filter(el => el.found === false).length !== 0) {
         const foundChar = await playerClicks(characters)
         if (foundChar !== null) {
             const char = characters.find(el => el.name === foundChar)
             char.found = true
             console.log('ok', foundChar)
+            // implement visual handle for characters
         }
     }
-    console.log('end of game')
+    stopTimer()
 }
 async function playerClicks(characters) {
     return new Promise((res) => {
+        // if (characters.filter(el => el.found === false).length === 0) {
+        //     res(null)
+        // }
         async function getClick(e) {
             document.querySelector('#game-container').removeEventListener('click', getClick)
+            // below line must stay at top
             const firstClick = e.target
             const guessBox = await BoxCharacters(e, characters)
             document.querySelector('#game-container').removeChild(document.querySelector('.char-box'))

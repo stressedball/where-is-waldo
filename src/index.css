@@ -23,3 +23,68 @@ body {
 .green{
   color: rgba(5, 196, 30, 0.781);
 }
+.timer{
+  position: fixed;
+  font-size: 3rem;
+  top: 0;
+  left: 50vw;
+  color: black;
+  background-color: #808080e8;
+  transform: translate(-50%, 0);
+  border: 1px solid black;
+  padding: 0.8rem;
+}
+
+.save-time{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.849);
+  padding: 20px;
+  border: 1px solid black;
+  color: white;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 3rem;
+}
+
+#announcement{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.enter-name{
+  display: flex;
+  flex-direction: column;
+  max-width: 50%;
+  align-items: center;
+  margin: auto;
+}
+
+input#player-name{
+  width: 100%;
+}
+
+.sign-in{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.sign-in button {
+  height: 35px;
+  width: 180px;
+}
+
+.error {
+  font-size: 1rem;
+  color: white;
+  background-color: rgba(173, 78, 78, 0.562);
+  box-sizing: border-box;
+}

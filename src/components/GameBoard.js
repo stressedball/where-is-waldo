@@ -1,37 +1,26 @@
 import { useState, useEffect } from "react";
-import firebase from 'firebase/compat/app';
-import "firebase/compat/firestore";
-
+import Timer from "./Timer";
+import gameLoop from "./gameLoop";
+import TimeSave from "./endGamePrompt";
+import { characters, picture } from "../index.js";
 export default function GameBoard() {
-    const [characters, setCharacters] = useState([]);
-    const [picture, setPicture] = useState({ width: 0, height: 0 });
-    const [loading, setLoading] = useState(true);
-
+    const [startTimer, setStartTimer] = useState(false)
+    const [isStopped, setStopTimer] = useState(false)
+    const [[min, sec, hundred], setTime] = useState([0, 0, 0])
+    // I think this is the main reason that makes the code crash
     useEffect(() => {
-        async function fetchData() {
-            try {
-                await firebase.firestore().collection('areas').get().then((doc) => {
-                    let characters =[]
-                    doc.forEach(character =>{
-                        characters.push(character.data());
-                    })
-                    setCharacters(characters)
-                });
-                await firebase.firestore().collection("picture").get().then((data) => {
-                    const playground = data.docs[0].data();
-                    setPicture({ width: playground.width, height: playground.height });
-                });
-                setLoading(false);
-            } catch (error) {
-                console.error(error);
-                setLoading(false);
-            }
-        }
-        fetchData();
+        gameLoop(characters, gameStarts, stopTimer)
     }, []);
-    while (loading) {
-        return <div>Loading...</div>
+    const gameStarts = () => {
+        setStartTimer(true)
     }
+    const stopTimer = () => {
+        setStopTimer(true)
+    }
+    const saveTime = (min, sec, hundred) => {
+        setTime([min, sec, hundred])
+    }
+    // placing the characters on the map accordingly to viewport
     const totalWidth = document.querySelector('body').scrollWidth
     const coefficient = totalWidth / picture.width
     const charMap = characters.map(el => {
@@ -52,6 +41,8 @@ export default function GameBoard() {
             <map name="glorious" >
                 {charMap}
             </map>
+            {startTimer === true ? <Timer saveTime={saveTime} isStopped={isStopped} /> : null}
+            {isStopped === true ? <TimeSave time={[min, sec, hundred]} /> : null}
             <a href="https://www.deviantart.com/sandikarakhim/art/Game-Heroes-251052898">Amazing Photo : Sandikarakhim</a>
         </div>
     )
