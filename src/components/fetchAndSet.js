@@ -89,13 +89,10 @@ function checkStatus() {
                 uid = user.uid;
                 res(uid)
             } else {
-                // User is signed out
-                // ...
                 res(null)
             }
         });
     })
-
 }
 export {
     setData,

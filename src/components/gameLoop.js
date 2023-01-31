@@ -1,3 +1,4 @@
+import { setLogLevel } from "firebase/app"
 import BoxCharacters from "./BoxCharacters"
 export default async function gameLoop(characters, gameStarts, stopTimer) {
     characters.forEach(el => el.found = false)
@@ -8,23 +9,23 @@ export default async function gameLoop(characters, gameStarts, stopTimer) {
         if (foundChar !== null) {
             const char = characters.find(el => el.name === foundChar)
             char.found = true
-            console.log('ok', foundChar)
-            // implement visual handle for characters
+            console.log(char)
+            document.querySelector(`img[alt="avatar-${char.path.split('/').pop().split(".")[0]}"]`).classList.add('dim')
+            document.querySelector(`img[alt="avatar-${char.path.split('/').pop().split(".")[0]}"] + p`).classList.add('found')
         }
     }
     stopTimer()
 }
 async function playerClicks(characters) {
+    const playground = document.querySelector('#playground')
     return new Promise((res) => {
-        // if (characters.filter(el => el.found === false).length === 0) {
-        //     res(null)
-        // }
         async function getClick(e) {
-            document.querySelector('#game-container').removeEventListener('click', getClick)
+            console.log(e.target)
             // below line must stay at top
+            playground.removeEventListener('click', getClick)
             const firstClick = e.target
             const guessBox = await BoxCharacters(e, characters)
-            document.querySelector('#game-container').removeChild(document.querySelector('.char-box'))
+            playground.removeChild(document.querySelector('.char-box'))
             let character = null
             if (firstClick.classList.contains('character')) {
                 character = characters.filter(el => el.name === e.target.alt)[0]
@@ -37,18 +38,19 @@ async function playerClicks(characters) {
                 res(null)
             }
         }
-        document.querySelector('#game-container').addEventListener('click', getClick)
+        playground.addEventListener('click', getClick)
     })
 }
 
 const imageIsLoaded = () => {
+    const playground = document.querySelector('#playground')
     return new Promise((res) => {
-        if (document.querySelector('#game-container')) {
+        if (playground) {
             return res()
         }
         const observer = new MutationObserver(mutations => {
-            if (document.querySelector('#game-container')) {
-                res(document.querySelector('#game-container'));
+            if (playground) {
+                res(playground);
                 observer.disconnect();
             }
         });

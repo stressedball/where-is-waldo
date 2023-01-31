@@ -1,4 +1,3 @@
-'use strict'
 const config = {
     apiKey: "AIzaSyDtONoiYDTaa3CSazOu5FWnpC8YoT0uQIQ",
     authDomain: "where-is-waldo-df6c5.firebaseapp.com",

@@ -1,5 +1,6 @@
 import { getLoggedUser } from "./fetchAndSet"
 import { useEffect, useState } from "react"
+import uniqid from "uniqid"
 export default function UserSpace() {
     const [user, setUser] = useState([])
     useEffect(() => {
@@ -15,16 +16,34 @@ export default function UserSpace() {
     }, [])
     const userTimes = user.map(el => {
         return (
-            <div style={{display:"flex", flexDirection:"row"}}>
-                <p>{el.name}</p>
-                <p>{el.time[0] < 10 ? "0" : null}{el.time[0]}:{el.time[1] < 10 ? "0" : null}{el.time[1]}:{el.time[2] < 10 ? "0" : null}{el.time[2]}</p>
-            </div>
+            <tr key={uniqid()}>
+                <td style={{ padding: "0.5rem"}}>
+                    {el.name}
+                </td>
+                <td style={{ padding: "0.5rem"}}>
+                    {el.time[0] < 10 ? "0" : null}{el.time[0]}:{el.time[1] < 10 ? "0" : null}{el.time[1]}:{el.time[2] < 10 ? "0" : null}{el.time[2]}
+                </td>
+            </tr>
         )
     })
-    return(
-        <div>
-            Your scores
-            {userTimes}
+    return (
+        <div >
+            <h3 style={{
+                textAlign: "center"
+            }}>Your times</h3>
+            <table style={{
+                margin: "auto"
+            }}>
+                <thead>
+                    <tr>
+                        <th>Registered as</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {userTimes}
+                </tbody>
+            </table>
         </div>
     )
 }

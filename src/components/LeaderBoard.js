@@ -25,20 +25,34 @@ export default function LeaderBoard() {
     }, []);
     const leaderboard = times.map(el => {
         return (
-            <div className="row" key={uniqid()}>
-                <p>
+            <tr className="row" key={uniqid()}>
+                <td style={{ padding: "0.5rem"}}>
                     {el.name}
-                </p>
-                <p>
-                </p>
-                {el.time[0] < 10 ? "0" : null}{el.time[0]}:{el.time[1] < 10 ? "0" : null}{el.time[1]}:{el.time[2] < 10 ? "0" : null}{el.time[2]}
-            </div>
+                </td>
+                <td style={{ padding: "0.5rem"}}>
+                    {el.time[0] < 10 ? "0" : null}{el.time[0]}:{el.time[1] < 10 ? "0" : null}{el.time[1]}:{el.time[2] < 10 ? "0" : null}{el.time[2]}
+                </td>
+            </tr>
         )
     })
     return (
         <div>
-            <h1>Leader Board</h1>
-            {leaderboard}
+            <h1 style={{
+                textAlign: "center"
+            }}>Leaderboard</h1>
+            <table style={{
+                margin: "auto"
+            }}>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {leaderboard}
+                </tbody>
+            </table>
         </div>
     )
 }
