@@ -1,33 +1,136 @@
+import { doc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Avatars from "./Avatars";
+import {LandingAvatars} from "./Avatars";
 export default function LandingPage({ characters }) {
-    // const [character, setCharacter] = useState(null)
+
+    const [mode, setMode] = useState(null)
+    const [checkMode, setCheckMode] = useState(0)
+    const [isGame, setIsGame] = useState(false)
+    const navigate = useNavigate()
+
+    const handleClick = e => {
+
+        const buttons = document.querySelectorAll('button.mode-button')
+        
+        buttons.forEach(el => el.classList.remove('highlighted'))
+        setMode(e.target.value)
+    }
+
+    const checkCharacter = () => {
+
+        if (document.querySelectorAll('.avatar-container.highlighted').length === Number(mode) && mode !== null) {
+            
+            const charactersSelection = document.querySelectorAll('.avatar-container.highlighted img')
+            const roundCharacters = Array.from(charactersSelection).map(el => el.alt.split('-').pop())
+            let string = ''
+            
+            for (let char of roundCharacters) {
+                string += char + '-'
+            }
+            
+            navigate(`/game/${string}`)
+        } 
+
+        else {
+            console.log('not ok')
+        }
+    }
+
+    useEffect(() => {
+
+        const buttons = document.querySelectorAll('button.mode-button')
+        
+        buttons.forEach(el => el.classList.remove('highlighted'))
+        
+        if (mode === null) {
+            // const modeMessage = document.querySelector('body')
+            // const fontSize = parseInt(window.getComputedStyle(modeMessage).fontSize, 10)
+            // const padding = parseInt(window.getComputedStyle(modeMessage).padding, 10) * 2
+            // const computedMargin = fontSize + padding
+            // setMarginBottom(computedMargin)
+            return
+        }   
+        // setMarginBottom(0)
+        document.querySelector(`.mode-button[value="${mode}"]`).classList.add('highlighted')
+
+    }, [mode])
+
+
+
     return (
-        <div id="landing-page"
+        
+        <div
+            id="landing-page"
             style={{
                 position: "absolute",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)"
             }}>
-            <div id="instructions"
+           
+            <div
+                id="instructions"
                 style={{
                     textAlign: "center",
                 }}>
-                <h1 id="welcome">Welcome to a game of "Where is Waldo?"</h1>
-                <div id="start-game-container" style={{
+           
+                <h1
+                    id="welcome"
+                >Welcome to a game of "Where is Waldo?"</h1>
+           
+                <div
+                    id="start-game-container"
+                    style={{
                     display: "flex",
                     flexDirection: "column",
                     gap: "0.5rem",
                     alignItems: "center",
                     justifyContent: "center"
                 }}>
+      
                     <p>Find all the characters to win the game.</p>
+      
                     <p>Save your time and compare with the others! Have fun!</p>
-                    <Avatars characters={characters} />
-                    {/* <Link to='/game' >
-                    </Link> */}
+      
+                    <div id="mode">
+      
+                        <p>How many characters do you want to find?</p>
+      
+                        <div id="mode-button-container">
+      
+                            <button 
+                                className="mode-button"
+                                onClick={handleClick}
+                                value={3}
+                            >3 characters</button>
+      
+                            <button 
+                                className="mode-button"
+                                onClick={handleClick}
+                                value={5}
+                            >5 characters</button>
+      
+                            <button 
+                                className="mode-button"
+                                onClick={handleClick}
+                                value={8}
+                            >8 characters</button>
+                        </div>
+                
+                        {
+                
+                            mode !== null ?
+                            
+                                <p id="mode-message">Select {mode} characters to find!</p>
+                                : 
+                                <p id="mode-message" className="hidden"></p>
+                        }
+                    </div>
+                
+                    <LandingAvatars characters={characters} mode={mode} />
+                
                     <button id="start-game"
                         style={{
                             fontWeight: "bold",
@@ -37,23 +140,23 @@ export default function LandingPage({ characters }) {
                             border: "2px solid transparent",
                             boxShadow: "0 0 5px 0 white",
                             color: "hsl(197, 40%, 41%)"
-                        }} onMouseOver={(e) => {
+                        }}
+                        onMouseOver={(e) => {
                             e.target.style.color = "white"
                             e.target.style.backgroundColor = "hsl(197, 40%, 41%)"
                             e.target.style.boxShadow = "none"
                             e.target.style.border = "2px solid hsl(197, 40%, 80%)"
-                        }} onMouseLeave={(e) => {
+                        }}
+                        onMouseLeave={(e) => {
                             e.target.style.backgroundColor = "white"
                             e.target.style.color = "hsl(197, 40%, 41%)"
                             e.target.style.border = "2px solid transparent"
                             e.target.style.boxShadow = "0 0 5px 0 white"
                         }}
+                        onClick={checkCharacter}
                     >Start New Game</button>
                 </div>
             </div>
         </div >
     )
-}
-const checkCharacter = () => {
-
 }

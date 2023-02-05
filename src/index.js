@@ -7,12 +7,17 @@ import { Error, LeaderBoard, LandingPage, UserSpace, GameBoard } from './compone
 import { fetchData } from './components/fetchAndSet';
 let picture = {}
 let characters = []
+
 // this scares me.
 fetchData().then((data) => {
+
   picture = data.picture
   characters = data.characters
+
 }).then(() => {
+
   const router = createBrowserRouter([
+  
     {
       path: '/',
       element: <App />,
@@ -20,15 +25,21 @@ fetchData().then((data) => {
       children: [
         {
           path: '/',
-          element: <LandingPage characters={characters} />
+          element: <LandingPage
+            characters={characters}
+          />
         },
         {
           path: '/leader_board',
-          element: <LeaderBoard />
+          element: <LeaderBoard
+          />
         },
         {
-          path: '/game',
-          element: <GameBoard characters={characters} picture={picture} />
+          path: '/game/:chars',
+          element: <GameBoard
+            characters={characters}
+            picture={picture}
+          />
         },
         {
           path: '/user_space',
@@ -37,7 +48,9 @@ fetchData().then((data) => {
       ]
     }
   ])
+
   const root = ReactDOM.createRoot(document.getElementById('root'));
+  
   root.render(
     <React.StrictMode>
       <RouterProvider router={router} />

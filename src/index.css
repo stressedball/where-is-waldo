@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
 
+:root{
+  --body-color: hsl(197, 40%, 41%);
+}
 body {
   margin: 0;
   font-family: 'Prompt', sans-serif;
@@ -8,6 +11,10 @@ body {
 }
 
 /* PERSISTENT */
+button {
+  font-family: 'Prompt', sans-serif;
+}
+
 a {
   color: white;
   text-decoration: none;
@@ -40,8 +47,42 @@ a:hover {
 }
 
 /* LANDING PAGE */
+
+/* .avatar-container{
+  width: calc(100% + 2px);
+} */
+
+.avatar-container:hover{
+  cursor: pointer;
+  background-color: hsla(0, 0%, 88%, 0.521);
+}
+
 .highlighted{
+  /* border: 1px solid; */
+  /* width: calc(100% - 2px); */
+  background-color: hsla(0, 0%, 88%, 0.521);
+}
+#mode-button-container{
+  display: flex;
+  gap: 0.4rem;
+}
+.mode-button {
+  /* width: 80px; */
+  padding: 0.5rem;
+  border-radius: 3px;
+  color: white;
+  background-color: var(--body-color);
+  font-weight: bold;
   border: 1px solid;
+}
+
+.mode-button:hover{
+  background-color: hsla(0, 0%, 88%, 0.521);
+}
+
+.mode-button.highlighted{
+  background-color: hsla(0, 0%, 88%, 0.521);
+
 }
 
 /* GAMEBOARD */

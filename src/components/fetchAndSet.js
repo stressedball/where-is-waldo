@@ -10,8 +10,10 @@ const db = getFirestore(app);
 const auth = getAuth();
 
 async function fetchData() {
+    
     let characters = []
     let picture = { width: 0, height: 0 }
+
     try {
         await getDocs(collection(db, "areas")).then((response) => {
             response.forEach((doc) => {
@@ -23,17 +25,21 @@ async function fetchData() {
             picture = { width: playground.width, height: playground.height };
         });
         return { picture: picture, characters: characters }
+
     } catch (error) {
         console.error('error getting documents', error);
     }
 }
+
 async function setData(arr, handle, name) {
     let userId = null
+
     if (handle === 'anonymous') {
         await addDoc(collection(db, "times"), {
             time: arr,
             name: name
         })
+
     } else {
         const provider = new GoogleAuthProvider()
         await signInWithPopup(auth, provider)
@@ -49,8 +55,11 @@ async function setData(arr, handle, name) {
         })
     }
 }
+
 async function getTimes() {
+
     let listOfTimes = []
+
     try {
         await getDocs(collection(db, "times")).then((response) => {
             response.forEach((doc) => {
@@ -61,13 +70,18 @@ async function getTimes() {
             })
         })
         return listOfTimes
+
     } catch (error) {
         console.error('error getting documents', error);
     }
 }
+
 async function getLoggedUser() {
+
     let userData = []
+
     const uid = await checkStatus()
+
     try {
         await getDocs(collection(db, 'times')).then((docs) => {
             docs.forEach((doc) => {
@@ -76,14 +90,18 @@ async function getLoggedUser() {
                 }
             })
         })
+
     } catch (error) {
         console.error('error getting user times', error);
     }
     return userData
 }
 function checkStatus() {
+
     return new Promise((res) => {
+
         let uid = null
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 uid = user.uid;
@@ -95,6 +113,7 @@ function checkStatus() {
     })
 }
 export {
+
     setData,
     fetchData,
     getTimes,
