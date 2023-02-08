@@ -1,4 +1,3 @@
-import { setLogLevel } from "firebase/app"
 import BoxCharacters from "./BoxCharacters"
 
 export default async function gameLoop(characters, gameStarts, stopTimer) {

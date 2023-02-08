@@ -19,30 +19,30 @@ fetchData().then((data) => {
   const router = createBrowserRouter([
   
     {
-      path: '/',
+      path: '/where-is-waldo',
       element: <App />,
       errorElement: <Error />,
       children: [
         {
-          path: '/',
+          path: '/where-is-waldo/',
           element: <LandingPage
             characters={characters}
           />
         },
         {
-          path: '/leader_board',
+          path: '/where-is-waldo/leader_board',
           element: <LeaderBoard
           />
         },
         {
-          path: '/game/:chars',
+          path: '/where-is-waldo/game/:chars',
           element: <GameBoard
             characters={characters}
             picture={picture}
           />
         },
         {
-          path: '/user_space',
+          path: '/where-is-waldo/user_space',
           element: <UserSpace />
         }
       ]

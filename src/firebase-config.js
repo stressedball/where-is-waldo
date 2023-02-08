@@ -6,6 +6,7 @@ const config = {
     messagingSenderId: "327478842170",
     appId: "1:327478842170:web:ecfb2e2306de38128bb603"
 };
+
 export function getFirebaseConfig() {
     if (!config || !config.apiKey) {
         throw new Error('No Firebase configuration object provided.' + '\n' +

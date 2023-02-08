@@ -11,7 +11,6 @@ export default function GameBoard({ characters, picture }) {
     const [isStopped, setStopTimer] = useState(false)
     const [[min, sec, hundred], setTime] = useState([0, 0, 0])
     const location = useLocation().pathname.split('/').pop().split('-')
-    const roundPicture = useState(picture)
 
     let roundCharacters = [];
 
@@ -25,7 +24,6 @@ export default function GameBoard({ characters, picture }) {
             roundCharacters.push(char)
         }
     }
-    
 
     useEffect(() => {
 
@@ -33,7 +31,7 @@ export default function GameBoard({ characters, picture }) {
 
         function setGameHeaderPosition() {
 
-            const mainHeader = document.querySelector('.App .header')
+            const mainHeader = document.querySelector('#App .header')
             const mainHeaderBottom = mainHeader.offsetTop + mainHeader.offsetHeight
             const progress = document.querySelector('.game-progress')
 
@@ -41,18 +39,18 @@ export default function GameBoard({ characters, picture }) {
                 progress.style.position = "fixed"
                 progress.style.top = "0"
                 document.querySelector('#playground').style.marginTop = `${progress.offsetHeight}px`
-                progress.style.backgroundColor = "hsla(197, 40%, 41%, 0.8)"
+                progress.classList.add('fixed')
             } else {
                 progress.style.position = "unset"
-                progress.style.backgroundColor = "inherit"
                 document.querySelector('#playground').style.marginTop = "0"
+                progress.classList.remove('fixed')
             }
         }
 
         window.addEventListener('scroll', setGameHeaderPosition)
         return () => window.removeEventListener('scroll', setGameHeaderPosition)
 
-    }, []);
+    }, [roundCharacters]);
 
     const gameStarts = () => {
         setStartTimer(true)
@@ -92,10 +90,6 @@ export default function GameBoard({ characters, picture }) {
 
             <div
                 className="game-progress"
-                style={{
-                    display: "flex",
-                    flexDirection: "column"
-                }}
             >
 
                 <Avatars
@@ -119,7 +113,6 @@ export default function GameBoard({ characters, picture }) {
                 <img
                     key={"global"}
                     src={process.env.PUBLIC_URL + "/assets/candidates/game_heroes_by_sandikarakhim_d45gxnm-fullview.jpg"} 
-                    // src="/public/assets/candidates/game_heroes_by_sandikarakhim_d45gxnm-fullview.jpg" 
                     style={{
                         width: "100vw"
                     }}
@@ -135,7 +128,9 @@ export default function GameBoard({ characters, picture }) {
             {
                 isStopped === true
                     ?
-                    <TimeSave time={[min, sec, hundred]} />
+                    <TimeSave
+                        time={[min, sec, hundred]}
+                    />
                     :
                     null
             }

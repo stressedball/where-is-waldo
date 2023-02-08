@@ -1,22 +1,30 @@
 import { setData } from "./fetchAndSet"
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+
 export default function TimeSave(arr) {
+
     const navigate = useNavigate()
     const minutes = arr.time[0]
     const seconds = arr.time[1]
     const hundred = arr.time[2]
+
     const handleClick = (e) => {
+
         const name = document.querySelector('input#player-name')
+
         if (name.validity.valueMissing) {
             document.querySelector('span.error').textContent = "Please enter a name. You can get creative."
+
         } else {
             setData([minutes, seconds, hundred], e.target.id, name.value)
-            navigate('/leader_board')
+            navigate('/where-is-waldo/leader_board')
         }
     }
+
     const removeError = () => {
         document.querySelector('span.error').textContent = ""
     }
+
     return (
         <div className="save-time">
             <div id="announcement">
