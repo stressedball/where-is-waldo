@@ -1,6 +1,5 @@
 import uniqid from "uniqid"
 import { useEffect, useState } from "react";
-import { doc } from "firebase/firestore";
 
 function Avatars({ characters }) {
 
@@ -43,68 +42,6 @@ function LandingAvatars({ characters }) {
     const handleSelection = e => {
         document.querySelector(`div.avatar-container[data-key="${e.target.dataset.key}"]`).classList.toggle('highlighted')
     }
-    // useEffect(() => {
-
-    //     const getCharactersSelection = (e) => {
-
-    //         let handle = null
-
-    //         // getting character from clicked elements
-    //         if (e.target.children.length > 0) { // we have the "avatar-container"
-    //             handle = e.target.children[0].alt.split("-").pop()
-
-    //         } else { // we either have img element or h1 element
-
-    //             if (e.target === "img") handle = e.target.alt.split("-").pop() // if img
-    //             // if h1 go to parent
-
-    //             else handle = e.target.parentElement.children[0].alt.split("-").pop()
-    //         }
-
-    //         // check if parent element is already highlighted
-    //         // going back and forth to elements to avoid code duplication
-    //         if (document.querySelector(`img[alt="avatar-${handle}"]`).parentElement.classList.contains('highlighted')) {
-
-    //             setRoundCharacters(roundCharacters.filter(el => {
-    //                 return el[0].path.split('/').pop().split('.')[0] !== handle
-    //             }))
-
-    //             return
-    //         }
-
-    //         // setting the characters alt from their pathnames
-    //         const character = characters.filter(el => {
-
-    //             return el.path.split("/").pop().split(".")[0] === handle
-    //         })
-
-    //         setRoundCharacters(prevChars => [...prevChars, character])
-    //     }
-
-    //     document.querySelector('#characters-container').addEventListener('click', getCharactersSelection)
-
-    //     return () => {
-    //         if (document.querySelector('#characters-container')) {
-    //             document.querySelector('#characters-container').removeEventListener('click', getCharactersSelection)
-    //         }
-    //     }
-    // })
-
-    // following useEffect should only add style, doesn't alter data
-    // useEffect(() => {
-
-    //     const avatars = document.querySelectorAll('.avatar-container')
-
-    //     avatars.forEach(el => el.classList.remove('highlighted'))
-
-    //     roundCharacters.map(el => {
-
-    //         const alt = el[0].path.split("/").pop().split(".")[0]
-
-    //         document.querySelector(`img[alt="avatar-${alt}"]`).parentElement.classList.add("highlighted")
-    //     })
-
-    // }, [roundCharacters])
 
     // making the avatars container scroll horizontally
     useEffect(() => {
